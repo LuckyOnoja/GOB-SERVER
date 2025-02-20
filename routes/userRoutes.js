@@ -1,5 +1,14 @@
+const express = require('express');
+const router = express.Router();
+const userController = require('../controllers/userController');
 const { authenticate } = require('../middleware/auth');
 
-router.get('/dashboard', authenticate, (req, res) => {
-  res.send('Welcome to the dashboard');
-});
+// Public Routes
+router.post('/register', userController.registerUser);
+router.post('/login', userController.loginUser);
+
+// Protected Routes (require authentication)
+router.get('/dashboard', authenticate, userController.getDashboard);
+
+
+module.exports = router;

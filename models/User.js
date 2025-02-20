@@ -5,6 +5,7 @@ const UserSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   password: { type: String, required: true },
+  accountNumber: { type: String, unique: true }, // Unique 10-digit account number
   balance: { type: Number, default: 0 }, // Track user balance
   transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }], // Reference to transactions
 });
