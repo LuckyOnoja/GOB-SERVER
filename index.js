@@ -29,10 +29,12 @@ app.get('/', (req, res) => {
 const propeneerRoutes = require('./routes/propeneerRoutes');
 const paymentRoute = require('./routes/paymentRoute');
 const userRoutes = require('./routes/userRoutes');
+const transactionRoutes = require('./routes/transactionRoutes');
 
 app.use('/propeneer', propeneerRoutes);
 app.use('/payment', paymentRoute);
 app.use('/user', userRoutes);
+app.use('/transactions', transactionRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

@@ -100,3 +100,20 @@ exports.getDashboard = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+// Search User by Account Number
+exports.searchByAccountNumber = async (req, res) => {
+  try {
+    const { accountNumber } = req.params;
+
+    // Find user by account number
+    const user = await User.findOne({ accountNumber }).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ user });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

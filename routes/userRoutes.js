@@ -11,5 +11,8 @@ router.post('/login', userController.loginUser);
 // Protected Routes (require authentication)
 router.get('/dashboard', authenticate, userController.getDashboard);
 
+// Protected Routes (require authentication)
+router.get('/search/:accountNumber', authenticate, userController.searchByAccountNumber);
+
 
 module.exports = router;
