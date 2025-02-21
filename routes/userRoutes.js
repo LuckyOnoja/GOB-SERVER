@@ -5,6 +5,7 @@ const { authenticate } = require('../middleware/auth');
 
 // Public Routes
 router.post('/register', userController.registerUser);
+router.post("/check-email", userController.checkEmail);
 router.post('/login', userController.loginUser);
 
 // Protected Routes (require authentication)
