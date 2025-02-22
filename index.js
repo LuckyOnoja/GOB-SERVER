@@ -17,10 +17,16 @@ const PORT = process.env.PORT || 5000;
 //};
 //app.use(cors(corsOptions));
 
+// CORS configuration
 const corsOptions = {
-  origin: '*', // Allow all origins (for testing only)
+  origin: '*', // Allow all origins (for testing)
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow necessary methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allow necessary headers
 };
 app.use(cors(corsOptions));
+
+// Handle preflight requests for all routes
+app.options('*', cors(corsOptions));
 app.use(express.json());
 
 
