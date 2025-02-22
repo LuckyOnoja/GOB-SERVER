@@ -19,14 +19,12 @@ const PORT = process.env.PORT || 5000;
 
 // CORS configuration
 const corsOptions = {
-  origin: '*', // Allow all origins (for testing)
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow necessary methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allow necessary headers
+  origin: 'https://global-online-banking.vercel.app', // Replace with your frontend origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true, // Enable credentials
 };
 app.use(cors(corsOptions));
-
-// Handle preflight requests for all routes
-app.options('*', cors(corsOptions));
 app.use(express.json());
 
 
