@@ -8,21 +8,9 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-
-// CORS configuration
-//const corsOptions = {
- // origin: [process.env.CLIENT_NAME, process.env.LOCAL_CLIENTNAME], 
- // methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
- // credentials: true, 
-//};
-//app.use(cors(corsOptions));
-
-// CORS configuration
+// Middleware
 const corsOptions = {
-  origin: 'https://global-online-banking.vercel.app', // Replace with your frontend origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true, // Enable credentials
+  origin: [process.env.CLIENT_NAME, process.env.LOCAL_CLIENTNAME],
 };
 app.use(cors(corsOptions));
 app.use(express.json());
