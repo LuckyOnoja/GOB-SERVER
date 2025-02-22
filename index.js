@@ -10,10 +10,15 @@ const PORT = process.env.PORT || 5000;
 
 
 // CORS configuration
+//const corsOptions = {
+ // origin: [process.env.CLIENT_NAME, process.env.LOCAL_CLIENTNAME], 
+ // methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+ // credentials: true, 
+//};
+//app.use(cors(corsOptions));
+
 const corsOptions = {
-  origin: [process.env.CLIENT_NAME, process.env.LOCAL_CLIENTNAME], 
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  credentials: true, 
+  origin: '*', // Allow all origins (for testing only)
 };
 app.use(cors(corsOptions));
 app.use(express.json());

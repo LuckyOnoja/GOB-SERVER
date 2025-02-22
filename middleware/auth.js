@@ -11,7 +11,6 @@ exports.authenticate = (req, res, next) => {
     req.user = decoded; 
     next();
   } catch (error) {
-    console.error("JWT Verification Error:", error.message); // Log the error
     res.status(401).json({ message: "Not authorized, token failed" });
   }
 };
