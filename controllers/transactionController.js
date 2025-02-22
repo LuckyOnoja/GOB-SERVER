@@ -1,27 +1,25 @@
 const Transaction = require("../models/Transaction");
-const Propeneer = require("../models/Propeneer"); 
+const Propeneer = require("../models/Propeneer");
 const User = require("../models/User");
 
 // Transfer Funds
 exports.transferFunds = async (req, res) => {
   try {
-    const { senderId, receiverAccountNumber, amount } = req.body;
+    const { receiverAccountNumber, amount } = req.body;
+    const senderId = req.user.id;
 
     // Find sender and receiver
-    const sender = await User.findById(senderId);
-    const receiver = await User.findOne({ accountNumber: receiverAccountNumber });
+    const sender = await Propeneer.findById(senderId);
+    const receiver = await User.findOne({
+      accountNumber: receiverAccountNumber,
+    });
 
     if (!sender || !receiver) {
       return res.status(404).json({ message: "Sender or receiver not found" });
     }
 
-    // Check if sender has sufficient balance
-    if (sender.balance < amount) {
-      return res.status(400).json({ message: "Insufficient balance" });
-    }
+    // Update  receivers balance
 
-    // Update sender and receiver balances
-    sender.balance -= amount;
     receiver.balance += amount;
 
     // Create a new transaction
@@ -43,30 +41,29 @@ exports.transferFunds = async (req, res) => {
   }
 };
 
-
 // Get all transactions for the logged-in user
 exports.getUserTransactions = async (req, res) => {
-    try {
-      const userId = req.user.id; 
-  
-      // Find transactions where the user is either the sender or receiver
-      const transactions = await Transaction.find({
-        $or: [{ sender: userId }, { receiver: userId }],
+  try {
+    const userId = req.user.id;
+
+    // Find transactions where the user is either the sender or receiver
+    const transactions = await Transaction.find({
+      $or: [{ sender: userId }, { receiver: userId }],
+    })
+      .populate({
+        path: "sender",
+        model: Propeneer, // Using the Propeneer model for sender
+        select: "username email", // choose fields to populate
       })
-        .populate({
-          path: "sender",
-          model: Propeneer, // Using the Propeneer model for sender
-          select: "username email", // choose fields to populate
-        })
-        .populate({
-          path: "receiver",
-          model: User, // Using the User model for receiver
-          select: "firstName lastName email", // choose fields to populate
-        })
-        .sort({ date: -1 }); // Sort by date (newest first)
-  
-      res.status(200).json({ transactions });
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  };
+      .populate({
+        path: "receiver",
+        model: User, // Using the User model for receiver
+        select: "firstName lastName email", // choose fields to populate
+      })
+      .sort({ date: -1 }); // Sort by date (newest first)
+
+    res.status(200).json({ transactions });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

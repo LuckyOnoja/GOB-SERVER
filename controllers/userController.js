@@ -88,9 +88,11 @@ exports.loginUser = async (req, res) => {
 };
 
 // Get User Dashboard
-exports.getDashboard = async (req, res) => {
+exports.getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password"); // Exclude password
+    const userId = req.user.id
+    
+    const user = await User.findById(userId).select("-password");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
