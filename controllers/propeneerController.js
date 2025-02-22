@@ -81,7 +81,7 @@ exports.checkUsername = async (req, res) => {
 // Login Propeneer
 exports.loginPropeneer = async (req, res) => {
   const { username, password } = req.body;
-  console.log('login details ', username, password)
+  console.log("login details ", username, password);
   try {
     const propeneer = await Propeneer.findOne({ username });
     if (!propeneer) {
@@ -106,11 +106,11 @@ exports.loginPropeneer = async (req, res) => {
 // Get Propeneer Dashboard
 exports.getPropeneer = async (req, res) => {
   try {
-    const userId = req.user.id
-    
+    const userId = req.user.id;
+
     const user = await Propeneer.findById(userId).select("-password");
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "Propeneer not found" });
     }
 
     res.status(200).json({ user });
