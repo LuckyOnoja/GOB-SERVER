@@ -10,8 +10,6 @@ router.post("/login", userController.loginUser);
 
 // Protected Routes (require authentication)
 router.get("/", authenticate, userController.getUser);
-
-// Protected Routes (require authentication)
 router.get(
   "/search/:accountNumber",
   authenticate,
