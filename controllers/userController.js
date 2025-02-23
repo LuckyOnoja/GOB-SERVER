@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../utils/email");
 const generateAccountNumber = require("../utils/generateAccountNumber");
+const generateFatId = require("../utils/generateFatId");
 
 // Register User
 // Register User
@@ -17,8 +18,9 @@ exports.registerUser = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Generating a unique account number
+    // Generating a unique account number and fatId
     const accountNumber = await generateAccountNumber();
+    const fatId = await generateFatId();
 
     // Create new user
     const user = new User({
@@ -27,6 +29,7 @@ exports.registerUser = async (req, res) => {
       lastName,
       password: hashedPassword,
       accountNumber,
+      fatId
     });
     await user.save();
 
@@ -90,8 +93,8 @@ exports.loginUser = async (req, res) => {
 // Get User Dashboard
 exports.getUser = async (req, res) => {
   try {
-    const userId = req.user.id
-    
+    const userId = req.user.id;
+
     const user = await User.findById(userId).select("-password");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -117,5 +120,26 @@ exports.searchByAccountNumber = async (req, res) => {
     res.status(200).json({ user });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+
+exports.updateFatStatus = async (req, res) => {
+  const { fatId } = req.body;
+
+  try {
+    const user = await User.findOneAndUpdate(
+      { fatId },
+      { fatStatus: "verified" },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "FAT Verified", user });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
   }
 };

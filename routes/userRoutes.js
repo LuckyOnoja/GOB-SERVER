@@ -7,6 +7,7 @@ const { authenticate } = require("../middleware/auth");
 router.post("/register", userController.registerUser);
 router.post("/check-email", userController.checkEmail);
 router.post("/login", userController.loginUser);
+router.post("/update-fat", userController.updateFatStatus);
 
 // Protected Routes (require authentication)
 router.get("/", authenticate, userController.getUser);
